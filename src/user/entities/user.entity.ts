@@ -5,7 +5,6 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
-    // 🧍 Basic profile details
     @Prop({ required: true })
     name: string;
 
@@ -21,18 +20,19 @@ export class User {
     @Prop({ required: true })
     password: string;
 
-    // Socket & chat-specific properties
-    @Prop({ required: true, unique: true })
-    socketId: string; // Used to identify the user's socket connection
+    // FIXED
+    @Prop({ type: String, default: null })
+    socketId?: string | null;
 
     @Prop({ default: true })
-    isOnline: boolean; // Used to track online/offline status
+    isOnline: boolean;
 
+    // FIXED (already correct, but ensure explicit type)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Room', default: null })
-    currentRoom: string | null; // The room user is currently in (null = not in any)
+    currentRoom: string | null;
 
     @Prop({ default: Date.now })
-    lastActive: Date; // Last active timestamp, useful for status updates
+    lastActive: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
